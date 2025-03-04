@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Library</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Recipe Library</h1>
+
+    <div class="filters">
+      <div class="filter-type">
+        <h3>Filter by Diet</h3>
+        <button
+          class="filter-btn"
+          data-filter-type="diet"
+          data-filter-value="vegan"
+        >
+          Vegan
+        </button>
+        <button
+          class="filter-btn"
+          data-filter-type="diet"
+          data-filter-value="vegetarian"
+        >
+          Vegetarian
+        </button>
+        <button
+          class="filter-btn"
+          data-filter-type="diet"
+          data-filter-value="gluten free"
+        >
+          Gluten-Free
+        </button>
+        <button
+          class="filter-btn"
+          data-filter-type="diet"
+          data-filter-value="dairy free"
+        >
+          Dairy-Free
+        </button>
+      </div>
+
+      <div class="filter-type">
+        <h3>Filter by Cuisine</h3>
+        <button
+          class="filter-btn"
+          data-filter-type="cuisine"
+          data-filter-value="Mediterranean"
+        >
+          Mediterranean
+        </button>
+        <button
+          class="filter-btn"
+          data-filter-type="cuisine"
+          data-filter-value="Middle Eastern"
+        >
+          Middle Eastern
+        </button>
+        <button
+          class="filter-btn"
+          data-filter-type="cuisine"
+          data-filter-value="Asian"
+        >
+          Asian
+        </button>
+        <button
+          class="filter-btn"
+          data-filter-type="cuisine"
+          data-filter-value="Italian"
+        >
+          Italian
+        </button>
+        <button
+          class="filter-btn"
+          data-filter-type="cuisine"
+          data-filter-value="Mexican"
+        >
+          Mexican
+        </button>
+      </div>
+
+      <div class="filter-type">
+        <h3>Filter by Cooking Time</h3>
+        <button
+          class="filter-btn"
+          data-filter-type="time"
+          data-filter-value="under15"
+        >
+          Under 15 min
+        </button>
+        <button
+          class="filter-btn"
+          data-filter-type="time"
+          data-filter-value="15-30"
+        >
+          15-30 min
+        </button>
+        <button
+          class="filter-btn"
+          data-filter-type="time"
+          data-filter-value="30-60"
+        >
+          30-60 min
+        </button>
+        <button
+          class="filter-btn"
+          data-filter-type="time"
+          data-filter-value="over60"
+        >
+          Over 60 min
+        </button>
+      </div>
+
+      <div class="sort-filters">
+        <h3>Sort Recipes</h3>
+        <button class="sort-btn" data-sort="time" data-direction="ascending">
+          Sort by Cooking Time
+        </button>
+        <button
+          class="sort-btn"
+          data-sort="popularity"
+          data-direction="descending"
+        >
+          Sort by Popularity
+        </button>
+        <button class="sort-btn" data-sort="price" data-direction="ascending">
+          Sort by Price
+        </button>
+        <button
+          class="sort-btn"
+          data-sort="ingredients"
+          data-direction="ascending"
+        >
+          Sort by Ingredients
+        </button>
+      </div>
+    </div>
+
+    <div class="recipes-grid"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

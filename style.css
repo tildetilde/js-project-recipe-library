@@ -1,0 +1,313 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+}
+
+body {
+  background: #f5f5f5;
+  padding: 2rem;
+}
+
+h1 {
+  color: #0018a4;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+.filters,
+.sort-filters {
+  display: grid;
+  flex-direction: row; /* Stack headings and buttons */
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.filter-type {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Ensure h3 is properly spaced above the buttons */
+.filters h3,
+.sort-filters h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+/* Ensure buttons are grouped neatly */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 1.5rem;
+}
+
+.filter-btn,
+.sort-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+  font-weight: 500;
+  text-align: center;
+}
+
+.filter-btn {
+  background: #ffecea;
+  color: #0018a4;
+  border: 2px solid transparent;
+}
+
+.filter-btn:hover {
+  border-color: #0018a4;
+  background-color: #ff6589;
+  color: #ffffff;
+}
+
+.filter-btn.active {
+  background: #ff6589;
+  color: #ffffff;
+}
+
+.sort-btn {
+  background: #ccffe2;
+  color: #0018a4;
+  border: 2px solid transparent;
+}
+
+.sort-btn:hover {
+  border-color: #0018a4;
+}
+
+.sort-btn.active {
+  background: #0018a4;
+  color: #ffffff;
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.filter-btn {
+  background: #ffecea; /* Light pink for default state */
+  color: #0018a4; /* Dark blue text */
+  border: 2px solid transparent; /* Transparent border */
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.filter-btn:hover {
+  border-color: #0018a4; /* Dark blue border effect */
+  background-color: #ff6589;
+  color: #ffffff;
+}
+
+.filter-btn.active {
+  background: #ff6589; /* Dark pink background */
+  color: #ffffff; /* White text */
+}
+
+.sort-btn {
+  background: #ccffe2; /* Light blue for default state */
+  color: #0018a4; /* Dark blue text */
+  border: 2px solid transparent; /* Transparent border */
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.sort-btn:hover {
+  border-color: #0018a4; /* Dark blue stroke effect */
+}
+
+.sort-btn.active {
+  background: #0018a4; /* Dark blue background */
+  color: #ffffff; /* White text */
+}
+
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 2rem 1rem 1rem 1rem;
+}
+
+.recipe-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 350px;
+  max-width: 320px; /* Prevents it from getting too big */
+  width: 100%; /* Makes card narrower */
+  padding: 0.6rem; /* Less padding */
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #0018a4; /* Matches design */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.recipe-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.recipe-card h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  text-align: left;
+  padding-bottom: 1rem;
+}
+
+.recipe-card:hover {
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1.2px);
+  border: 1px solid #0018a4;
+}
+
+.recipe-card.hidden {
+  display: none;
+}
+
+.ingredient-list li {
+  max-height: 3.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  font-size: 0.85rem;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+/* 📱 Mobile (max-width: 500px) */
+@media (max-width: 500px) {
+  .recipes-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    justify-items: center;
+  }
+
+  .recipe-card {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  /* 🔥 Stack filters & sorting */
+  .filters,
+  .sort-filters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .filter-type {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+  }
+
+  .filter-type div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .filter-btn {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  /* 🔥 Sorting buttons should be compact */
+  .sort-filters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+/* 📲 Tablets (501px - 768px) */
+@media (min-width: 501px) and (max-width: 768px) {
+  .recipes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* 🔥 Center filters in a 2-column layout */
+  .filters {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .filter-type {
+    text-align: center;
+  }
+
+  .filter-type div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .filter-btn {
+    max-width: 200px;
+  }
+
+  /* 🔥 Sorting buttons should be centered */
+  .sort-filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+}
+
+/* 💻 Laptops & Desktops (769px - 1200px) */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .recipes-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .filters {
+    justify-content: center;
+  }
+}
+
+/* 🖥️ Widescreens (1201px and above) */
+@media (min-width: 1201px) {
+  .recipes-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
