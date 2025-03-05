@@ -77,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <h4 class="recipe-subtitle">Ingredients</h4>
           <ul class="ingredient-list">
             ${recipe.extendedIngredients
+              .slice(0, 4)
               .map(
                 (ingredient) =>
                   `<li class="ingredient-list-item">${ingredient.name}</li>`
