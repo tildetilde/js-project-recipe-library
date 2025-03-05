@@ -4,6 +4,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const recipesGrid = document.querySelector(".recipes-grid");
   const filterDropdown = document.querySelector(".filter-dropdown");
   const sortDropdown = document.querySelector(".sort-dropdown");
+  let activeRecipes = [];
+  const getRandomRecipe = document.querySelector(".random-btn");
+
+  getRandomRecipe.addEventListener("click", () => {
+    // if (activeRecipes.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * activeRecipes.length);
+    const randomRecipe = activeRecipes[randomIndex];
+    displayRecipes([randomRecipe]);
+  });
 
   document.querySelectorAll(".dropdown-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -20,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      // Toggle the clicked dropdown
       btn.classList.toggle("active");
       const content = btn.nextElementSibling;
       content.style.display =
@@ -157,6 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const recipes = await fetchRecipes();
     const filteredRecipes = filterRecipes(recipes);
     const sortedRecipes = sortRecipes(filteredRecipes);
+    activeRecipes = sortedRecipes;
     displayRecipes(sortedRecipes);
   };
 
