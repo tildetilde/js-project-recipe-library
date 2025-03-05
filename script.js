@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const sortDropdown = document.querySelector(".sort-dropdown");
   let activeRecipes = [];
   const getRandomRecipe = document.querySelector(".random-btn");
+  let allRecipes = [];
 
   getRandomRecipe.addEventListener("click", () => {
     if (activeRecipes.length === 0) return;
@@ -168,8 +169,10 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const updateRecipes = async () => {
-    const recipes = await fetchRecipes();
-    console.log("Fetched recipes:", recipes);
+    if (allRecipes.length === 0) {
+      allRecipes = await fetchRecipes();
+    }
+    const recipes = allRecipes;
     const filteredRecipes = filterRecipes(recipes);
     const sortedRecipes = sortRecipes(filteredRecipes);
     activeRecipes = sortedRecipes;
