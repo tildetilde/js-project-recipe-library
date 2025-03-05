@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const getRandomRecipe = document.querySelector(".random-btn");
 
   getRandomRecipe.addEventListener("click", () => {
-    // if (activeRecipes.length === 0) return;
+    if (activeRecipes.length === 0) return;
     const randomIndex = Math.floor(Math.random() * activeRecipes.length);
     const randomRecipe = activeRecipes[randomIndex];
     displayRecipes([randomRecipe]);
@@ -64,6 +64,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const displayRecipes = (recipes) => {
     recipesGrid.innerHTML = "";
     // recipes = [{}, {}, {}, {}]
+    if (recipes.length === 0) {
+      recipesGrid.innerHTML =
+        '<img src="notamatch.gif" alt="No recipes match your filters.">';
+      return;
+    }
+
     recipes.forEach((recipe) => {
       // {
       //   extendedIngredients [
@@ -163,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const updateRecipes = async () => {
     const recipes = await fetchRecipes();
+    console.log("Fetched recipes:", recipes);
     const filteredRecipes = filterRecipes(recipes);
     const sortedRecipes = sortRecipes(filteredRecipes);
     activeRecipes = sortedRecipes;

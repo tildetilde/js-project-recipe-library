@@ -1,17 +1,21 @@
 button that selects and displays random recipe
 html
-[] create a button
+[X] create a button
 
 css
-[] make it loook good
+[X] make it loook good
 
 js
-[] go through all recipes
-[] find a way to select one randomly
-[] find a way to display that recipe
+[X] store all active recipes somewhere
+[X]go through all active recipes
+[X] find a way to select one randomly
+[X] find a way to display that recipe (and make it look good)
+[] find a way to make button not appearing before the rest of the content (maybe by disabling getrandomrecipe before update recipes is done: getRandomRecipe.disabled = true;
+getRandomRecipe.disabled = false;
+)
 
 display message when no criterias are met
-[] in js, find a way to know when the requirements are met and not
+[X] in js, find a way to know when the requirements are met and not and display message
 
 sorting on amount of ingredients
 []
