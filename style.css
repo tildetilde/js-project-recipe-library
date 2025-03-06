@@ -37,6 +37,7 @@ h1 {
   background: #ccffe2;
   color: #0018a4;
   border: solid 2px transparent;
+  z-index: 2;
 }
 
 .filter-dropdown .dropdown-btn:hover {
@@ -54,6 +55,7 @@ h1 {
   background: #ffecea;
   color: #0018a4;
   border: solid 2px transparent;
+  z-index: 2;
 }
 
 .sort-dropdown .dropdown-btn:hover {
@@ -159,6 +161,38 @@ h1 {
   list-style: none;
 }
 
+.hidden {
+  display: none;
+}
+
+.random-button-container.hidden {
+  display: none;
+}
+
+.recipes-grid.no-recipes-active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  position: relative;
+  z-index: 1;
+}
+
+.no-recipes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px; /* or whatever height works in your layout */
+  width: 100%;
+}
+
+.no-recipes img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 .filter-btn.active {
   background: #0018a4;
   color: white;
@@ -192,6 +226,13 @@ h1 {
   background: #ffc700;
   color: #ff4575;
   border: #0018a4 solid 2px;
+}
+
+@media (max-width: 480px) {
+  .no-recipes {
+    align-items: center;
+    height: 600px;
+  }
 }
 
 @media (max-width: 768px) {

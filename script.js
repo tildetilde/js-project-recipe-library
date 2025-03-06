@@ -4,8 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const recipesGrid = document.querySelector(".recipes-grid");
   const filterDropdown = document.querySelector(".filter-dropdown");
   const sortDropdown = document.querySelector(".sort-dropdown");
-  let activeRecipes = [];
   const getRandomRecipe = document.querySelector(".random-btn");
+  const randomButtonContainer = document.querySelector(
+    ".random-button-container"
+  );
+  let activeRecipes = [];
   let allRecipes = [];
 
   getRandomRecipe.addEventListener("click", () => {
@@ -66,10 +69,17 @@ document.addEventListener("DOMContentLoaded", () => {
     recipesGrid.innerHTML = "";
     // recipes = [{}, {}, {}, {}]
     if (recipes.length === 0) {
-      recipesGrid.innerHTML =
-        '<img src="notamatch.gif" alt="No recipes match your filters.">';
+      console.log("No recipes found. Hiding button.");
+      recipesGrid.classList.add("no-recipes-active");
+      randomButtonContainer.classList.add("hidden");
+      recipesGrid.innerHTML = `<div class="no-recipes">
+    <img src="computersaysno.gif" alt="No recipes match your filters.">
+      </div>
+      `;
       return;
     }
+    recipesGrid.classList.remove("no-recipes-active");
+    randomButtonContainer.classList.remove("hidden");
 
     recipes.forEach((recipe) => {
       // {
@@ -176,11 +186,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const filteredRecipes = filterRecipes(recipes);
     const sortedRecipes = sortRecipes(filteredRecipes);
     activeRecipes = sortedRecipes;
+
     displayRecipes(sortedRecipes);
   };
 
   filterDropdown.addEventListener("change", updateRecipes);
   sortDropdown.addEventListener("change", updateRecipes);
+
+  console.log("Update Recipes:", activeRecipes.length);
 
   updateRecipes();
 });
