@@ -26,7 +26,7 @@ displsy a message if 150 API calls have been made []
 
 Implement local storage caching to reduce API requests []
 
-Show a loading state while fetching data []
+Show a loading state while fetching data [X]
 
 Allow users to search for specific recipe names or ingredients []
 
@@ -35,3 +35,5 @@ Allow users to save/like recipes and store them in local storage. This includes 
 Implement pagination for large results or infinite scrolling (e.g. fetching more recipes when the user has reached the bottom) [X]
 
 Shoow recipe link when clicking recipe []
+
+Make sure you do not accidentally scroll on mobile []
