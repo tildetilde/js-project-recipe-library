@@ -10,17 +10,45 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   let activeRecipes = [];
   let allRecipes = [];
+  let isLoading = false;
 
   getRandomRecipe.addEventListener("click", () => {
     if (activeRecipes.length === 0) return;
+    // if this is true stop here
     const randomIndex = Math.floor(Math.random() * activeRecipes.length);
     const randomRecipe = activeRecipes[randomIndex];
     displayRecipes([randomRecipe]);
   });
 
+  window.addEventListener("scroll", async () => {
+    if (isLoading) return;
+
+    if (
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 50
+    ) {
+      isLoading = true;
+      await loadMoreRecipes();
+      isLoading = false;
+    }
+  });
+
+  const loadMoreRecipes = async () => {
+    const loader = document.getElementById("loader");
+    loader.style.display = "block"; // Show the spinner while loading
+
+    const newRecipes = await fetchRecipes();
+
+    if (newRecipes.length > 0) {
+      activeRecipes = [...activeRecipes, ...newRecipes]; // Append new recipes
+      displayRecipes(activeRecipes);
+    }
+
+    loader.style.display = "none"; // Hide the spinner after fetching
+  };
+
   document.querySelectorAll(".dropdown-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-      // Close any other open dropdown before opening this one
       document.querySelectorAll(".dropdown-content").forEach((content) => {
         if (content !== btn.nextElementSibling) {
           content.style.display = "none"; // Close other dropdowns
@@ -80,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     recipesGrid.classList.remove("no-recipes-active");
     randomButtonContainer.classList.remove("hidden");
+    randomButtonContainer.style.display = "flex";
 
     recipes.forEach((recipe) => {
       // {
@@ -179,15 +208,25 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const updateRecipes = async () => {
-    if (allRecipes.length === 0) {
-      allRecipes = await fetchRecipes();
-    }
-    const recipes = allRecipes;
-    const filteredRecipes = filterRecipes(recipes);
-    const sortedRecipes = sortRecipes(filteredRecipes);
-    activeRecipes = sortedRecipes;
+    const loader = document.getElementById("loader");
+    loader.style.display = "block"; // Show the spinner
+    randomButtonContainer.style.display = "none";
 
-    displayRecipes(sortedRecipes);
+    try {
+      if (allRecipes.length === 0) {
+        allRecipes = await fetchRecipes();
+      }
+      const recipes = allRecipes;
+      const filteredRecipes = filterRecipes(recipes);
+      const sortedRecipes = sortRecipes(filteredRecipes);
+      activeRecipes = sortedRecipes;
+
+      displayRecipes(sortedRecipes);
+    } catch (error) {
+      console.error("Error updating recipes:", error);
+    } finally {
+      loader.style.display = "none"; // Hide the spinner after fetching
+    }
   };
 
   filterDropdown.addEventListener("change", updateRecipes);

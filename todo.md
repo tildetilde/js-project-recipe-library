@@ -20,4 +20,18 @@ display message when no criterias are met
 sorting on amount of ingredients
 []
 
-filtering on amount of ingredients
+filtering on amount of ingredients []
+
+displsy a message if 150 API calls have been made []
+
+Implement local storage caching to reduce API requests []
+
+Show a loading state while fetching data []
+
+Allow users to search for specific recipe names or ingredients []
+
+Allow users to save/like recipes and store them in local storage. This includes adding a heart button to the recipe card and adding a "View favourites" button that only shows favourite recipes. []
+
+Implement pagination for large results or infinite scrolling (e.g. fetching more recipes when the user has reached the bottom) [X]
+
+Shoow recipe link when clicking recipe []
