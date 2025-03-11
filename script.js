@@ -112,6 +112,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // randomButtonContainer.classList.remove("hidden");
     randomButtonContainer.style.display = isRandomRecipe ? "none" : "flex";
 
+    const container = document.createElement("div");
+    container.classList.add("recipe-container");
+
     recipes.forEach((recipe) => {
       // {
       //   extendedIngredients [
@@ -121,13 +124,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const card = document.createElement("div");
       card.classList.add("recipe-card");
-      const navigationButtons = isRandomRecipe
-        ? `
-      <div class="navigation-buttons">
-          <button class="nav-btn back-btn">Back to all recipes</button>
-          <button class="nav-btn try-again-btn">Try again</button>
-      </div>`
-        : "";
+      // const navigationButtons = isRandomRecipe
+      //   ? `
+      // <div class="navigation-buttons">
+      //     <button class="nav-btn back-btn">Back to all recipes</button>
+      //     <button class="nav-btn try-again-btn">Try again</button>
+      // </div>`
+      //   : "";
 
       card.innerHTML = `
         <img src="${recipe.image}" alt="${recipe.title}">
@@ -137,7 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
             recipe.cuisines.join(", ") || "Not specified"
           }</p>
           <p class="recipe-meta">Time: ${recipe.readyInMinutes} min</p>
-
           <h4 class="recipe-subtitle">Ingredients</h4>
           <ul class="ingredient-list">
             ${recipe.extendedIngredients
@@ -148,14 +150,23 @@ document.addEventListener("DOMContentLoaded", () => {
               )
               .join("")}
           </ul>
-          ${navigationButtons}
         </div>
       `;
-      recipesGrid.appendChild(card);
+      container.appendChild(card);
       if (isRandomRecipe) {
-        const backBtn = card.querySelector(".back-btn");
-        const tryAgainBtn = card.querySelector(".try-again-btn");
+        // const backBtn = card.querySelector(".back-btn");
+        // const tryAgainBtn = card.querySelector(".try-again-btn");
+        const navigationButtons = document.createElement("div");
+        navigationButtons.classList.add("navigation-buttons");
+        navigationButtons.innerHTML = `
+                <button class="nav-btn back-btn">Back to all recipes</button>
+                <button class="nav-btn try-again-btn">Try again</button>
+            `;
+        container.appendChild(navigationButtons);
 
+        // Add event listeners
+        const backBtn = navigationButtons.querySelector(".back-btn");
+        const tryAgainBtn = navigationButtons.querySelector(".try-again-btn");
         backBtn.addEventListener("click", () => {
           displayRecipes(activeRecipes);
         });
@@ -169,6 +180,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     });
+
+    recipesGrid.appendChild(container);
   };
 
   const filterRecipes = (recipes) => {
