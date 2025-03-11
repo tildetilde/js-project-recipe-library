@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const API_URL =
-    "https://api.spoonacular.com/recipes/random?number=10&include-tags=vegetarian&apiKey=76c7e57bf79245a0a12a395c3fdb2f0b";
+    "https://api.spoonacular.com/recipes/random?number=12&include-tags=vegetarian,gluten-free,dairy-free,Mediterranean,Asian,Italian,Mexican&apiKey=76c7e57bf79245a0a12a395c3fdb2f0b";
   const recipesGrid = document.querySelector(".recipes-grid");
   const filterDropdown = document.querySelector(".filter-dropdown");
   const sortDropdown = document.querySelector(".sort-dropdown");
@@ -11,17 +11,19 @@ document.addEventListener("DOMContentLoaded", () => {
   let activeRecipes = [];
   let allRecipes = [];
   let isLoading = false;
+  let isRandomRecipeDisplayed = false;
 
   getRandomRecipe.addEventListener("click", () => {
     if (activeRecipes.length === 0) return;
     // if this is true stop here
     const randomIndex = Math.floor(Math.random() * activeRecipes.length);
     const randomRecipe = activeRecipes[randomIndex];
-    displayRecipes([randomRecipe]);
+    displayRecipes([randomRecipe], true);
+    isRandomRecipeDisplayed = true;
   });
 
   window.addEventListener("scroll", async () => {
-    if (isLoading) return;
+    if (isLoading || isRandomRecipeDisplayed) return;
 
     if (
       window.innerHeight + window.scrollY >=
@@ -93,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const displayRecipes = (recipes) => {
+  const displayRecipes = (recipes, isRandomRecipe = false) => {
     recipesGrid.innerHTML = "";
     // recipes = [{}, {}, {}, {}]
     if (recipes.length === 0) {
@@ -107,8 +109,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     recipesGrid.classList.remove("no-recipes-active");
-    randomButtonContainer.classList.remove("hidden");
-    randomButtonContainer.style.display = "flex";
+    // randomButtonContainer.classList.remove("hidden");
+    randomButtonContainer.style.display = isRandomRecipe ? "none" : "flex";
 
     recipes.forEach((recipe) => {
       // {
@@ -119,6 +121,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const card = document.createElement("div");
       card.classList.add("recipe-card");
+      const navigationButtons = isRandomRecipe
+        ? `
+      <div class="navigation-buttons">
+          <button class="nav-btn back-btn">Back to all recipes</button>
+          <button class="nav-btn try-again-btn">Try again</button>
+      </div>`
+        : "";
+
       card.innerHTML = `
         <img src="${recipe.image}" alt="${recipe.title}">
         <div class="recipe-content">
@@ -138,9 +148,26 @@ document.addEventListener("DOMContentLoaded", () => {
               )
               .join("")}
           </ul>
+          ${navigationButtons}
         </div>
       `;
       recipesGrid.appendChild(card);
+      if (isRandomRecipe) {
+        const backBtn = card.querySelector(".back-btn");
+        const tryAgainBtn = card.querySelector(".try-again-btn");
+
+        backBtn.addEventListener("click", () => {
+          displayRecipes(activeRecipes);
+        });
+
+        tryAgainBtn.addEventListener("click", () => {
+          const newRandomIndex = Math.floor(
+            Math.random() * activeRecipes.length
+          );
+          const newRandomRecipe = activeRecipes[newRandomIndex];
+          displayRecipes([newRandomRecipe], true);
+        });
+      }
     });
   };
 
