@@ -100,6 +100,15 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const displayRecipes = (recipes) => {
+    const closeDropdowns = () => {
+      document.querySelectorAll(".dropdown-content").forEach((content) => {
+        content.style.display = "none";
+      });
+
+      document.querySelectorAll(".dropdown.content").forEach((btn) => {
+        btn.classList.remove("active");
+      });
+    };
     recipesGrid.innerHTML = "";
     // recipes = [{}, {}, {}, {}]
     if (recipes.length === 0) {
@@ -111,6 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
     <button class="reset-filters-btn">Reset Filters</button>
       </div>
       `;
+
+      closeDropdowns();
 
       document
         .querySelector(".reset-filters-btn")
