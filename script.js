@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const API_URL =
-    "https://api.spoonacular.com/recipes/random?number=10&include-tags=vegetarian&apiKey=76c7e57bf79245a0a12a395c3fdb2f0b";
+    "https://api.spoonacular.com/recipes/random?number=102&include-tags=vegetarian&apiKey=76c7e57bf79245a0a12a395c3fdb2f0b";
   const recipesGrid = document.querySelector(".recipes-grid");
   const filterDropdown = document.querySelector(".filter-dropdown");
   const sortDropdown = document.querySelector(".sort-dropdown");
@@ -85,6 +85,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const fetchRecipes = async () => {
     try {
       const response = await fetch(API_URL);
+
+      if (response.status === 402) {
+        showQuotaExceededMessage();
+        return;
+      }
+
       const data = await response.json();
       return data.recipes;
     } catch (error) {
@@ -143,6 +149,24 @@ document.addEventListener("DOMContentLoaded", () => {
       recipesGrid.appendChild(card);
     });
   };
+
+  const showQuotaExceededMessage = () => {
+    // Hide the loader in case it's still visible
+    const loader = document.getElementById("loader");
+    loader.style.display = "none";
+
+    // Replace recipe grid content with the quota message
+    recipesGrid.innerHTML = `
+      <div class="quota-message">
+        <h2>Daily Limit Reached</h2>
+        <p>You've reached the daily limit of 150 recipe requests.</p>
+        <p>Please try again tomorrow or upgrade your plan.</p>
+      </div>
+    `;
+  };
+
+  showQuotaExceededMessage();
+  return;
 
   const filterRecipes = (recipes) => {
     const filters = {
