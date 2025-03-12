@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
       return data.recipes;
     } catch (error) {
-      console.error("Error fetching recipes:", error);
+      console.warn("Error fetching recipes:", error);
       return [];
     }
   };
@@ -188,7 +188,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const loader = document.getElementById("loader");
     if (loader) loader.style.display = "none";
 
-    recipesGrid.style.display = "none";
     const recipesGrid = document.querySelector(".recipes-grid");
     const quotaMessage = document.querySelector(".quota-message");
 
@@ -275,6 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       if (allRecipes.length === 0) {
         allRecipes = await fetchRecipes();
+        if (allRecipes.length === 0) return;
       }
       const recipes = allRecipes;
       const filteredRecipes = filterRecipes(recipes);

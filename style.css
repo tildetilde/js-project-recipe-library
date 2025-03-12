@@ -301,8 +301,8 @@ h1 {
   flex-direction: column;
 }
 
-p {
-  padding: 1em 1em 1em 1em;
+.quota-description {
+  padding: 1em 0 0;
   font-size: 1em;
   line-height: 1.6;
 }
