@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let activeRecipes = [];
   let allRecipes = [];
   let isLoading = false;
+  /* wow */
 
   getRandomRecipe.addEventListener("click", () => {
     if (activeRecipes.length === 0) return;
