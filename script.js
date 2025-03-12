@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const API_URL =
-    "https://api.spoonacular.com/recipes/random?number=102&include-tags=vegetarian&apiKey=1f7a525474994d99b2f2a00a1f826e01";
+    "https://api.spoonacular.com/recipes/random?number=12&include-tags=vegetarian&apiKey=1f7a525474994d99b2f2a00a1f826e01";
   const recipesGrid = document.querySelector(".recipes-grid");
   const filterDropdown = document.querySelector(".filter-dropdown");
   const sortDropdown = document.querySelector(".sort-dropdown");
@@ -149,18 +149,28 @@ document.addEventListener("DOMContentLoaded", () => {
         <img src="${recipe.image}" alt="${recipe.title}">
         <div class="recipe-content">
           <h3 class="recipe-title">${recipe.title}</h3>
-          <p class="recipe-meta">Cuisine: ${
-            recipe.cuisines.join(", ") || "Not specified"
-          }</p>
-          <p class="recipe-meta">Time: ${recipe.readyInMinutes} min</p>
-
+          <hr>
+          <div>
+            <p class="recipe-meta">
+              <span class="material-icons">restaurant</span> ${
+                recipe.cuisines[0] || "-"
+              }</p>
+            <p class="recipe-meta">
+              <span class="material-icons">schedule</span> ${
+                recipe.readyInMinutes
+              } min
+            </p>
+          </div>
+          <hr>
           <h4 class="recipe-subtitle">Ingredients</h4>
           <ul class="ingredient-list">
             ${recipe.extendedIngredients
               .slice(0, 4)
               .map(
                 (ingredient) =>
-                  `<li class="ingredient-list-item">${ingredient.name}</li>`
+                  `<li class="ingredient-list-item">${capitalize(
+                    ingredient.name
+                  )}</li>`
               )
               .join("")}
           </ul>
@@ -265,6 +275,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (time > 30 && time <= 60) return "30-60";
     return "over60";
   };
+
+  const capitalize = (s) =>
+    s && String(s[0]).toUpperCase() + String(s).slice(1);
 
   const updateRecipes = async () => {
     const loader = document.getElementById("loader");
