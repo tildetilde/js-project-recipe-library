@@ -103,13 +103,19 @@ document.addEventListener("DOMContentLoaded", () => {
     recipesGrid.innerHTML = "";
     // recipes = [{}, {}, {}, {}]
     if (recipes.length === 0) {
-      console.log("No recipes found. Hiding button.");
       recipesGrid.classList.add("no-recipes-active");
       randomButtonContainer.classList.add("hidden");
       recipesGrid.innerHTML = `<div class="no-recipes">
     <img src="computersaysno.gif" alt="No recipes match your filters.">
+    <p>No recipes match the filters. Sorry ♥️! </p>
+    <button class="reset-filters-btn">Reset Filters</button>
       </div>
       `;
+
+      document
+        .querySelector(".reset-filters-btn")
+        .addEventListener("click", resetFilters);
+
       return;
     }
     recipesGrid.classList.remove("no-recipes-active");
@@ -148,6 +154,18 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       recipesGrid.appendChild(card);
     });
+  };
+
+  const resetFilters = () => {
+    // Uncheck all checkboxes
+    document
+      .querySelectorAll('input[type="checkbox"], input[type="radio"]')
+      .forEach((input) => {
+        input.checked = false;
+      });
+
+    // Show all recipes again
+    displayRecipes(allRecipes);
   };
 
   const showQuotaExceededMessage = () => {
