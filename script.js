@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const API_URL =
-    "https://api.spoonacular.com/recipes/random?number=12&include-tags=vegetarian,gluten-free,dairy-free,Mediterranean,Asian,Italian,Mexican&apiKey=76c7e57bf79245a0a12a395c3fdb2f0b";
+  const BASE_URL = "https://api.spoonacular.com/recipes/random";
+  const API_KEY = "76c7e57bf79245a0a12a395c3fdb2f0b";
+  const API_URL = `${BASE_URL}/?apiKey=${API_KEY}&number=30`;
+
   const recipesGrid = document.querySelector(".recipes-grid");
   const filterDropdown = document.querySelector(".filter-dropdown");
   const sortDropdown = document.querySelector(".sort-dropdown");
@@ -12,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let allRecipes = [];
   let isLoading = false;
   let isRandomRecipeDisplayed = false;
+  const allowedCuisines = ["Mediterranean", "Asian", "Italian", "Mexican"];
 
   getRandomRecipe.addEventListener("click", () => {
     if (activeRecipes.length === 0) return;
@@ -88,7 +91,16 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch(API_URL);
       const data = await response.json();
-      return data.recipes;
+      const validRecipes = data.recipes.filter((recipe) => {
+        return (
+          recipe.cuisines.some((cuisine) =>
+            allowedCuisines.includes(cuisine)
+          ) &&
+          recipe.image &&
+          recipe.title
+        );
+      });
+      return validRecipes;
     } catch (error) {
       console.error("Error fetching recipes:", error);
       return [];
