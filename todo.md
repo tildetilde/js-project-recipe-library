@@ -1,39 +1,23 @@
-button that selects and displays random recipe
-html
-[X] create a button
+## To dos (priority)
 
-css
-[X] make it loook good
+1. Show message when daily quota has been reached [X – need to double check]
 
-js
-[X] store all active recipes somewhere
-[X]go through all active recipes
-[X] find a way to select one randomly
-[X] find a way to display that recipe (and make it look good)
-[] find a way to make button not appearing before the rest of the content (maybe by disabling getrandomrecipe before update recipes is done: getRandomRecipe.disabled = true;
-getRandomRecipe.disabled = false;
-)
+2. Change cuisine filter to amounts of ingredients []
 
-display message when no criterias are met
-[X] in js, find a way to know when the requirements are met and not and display message
+3. Make sure you can back to all recipes when once no filter is met [X]
 
-sorting on amount of ingredients
-[]
+4. Add an all recipes button []
 
-filtering on amount of ingredients []
+5. Add filtering symbol [X]
 
-displsy a message if 150 API calls have been made []
+6. Add sorting symbol [X]
 
-Implement local storage caching to reduce API requests []
-
-Show a loading state while fetching data [X]
+## Stretch
 
 Allow users to search for specific recipe names or ingredients []
 
 Allow users to save/like recipes and store them in local storage. This includes adding a heart button to the recipe card and adding a "View favourites" button that only shows favourite recipes. []
 
-Implement pagination for large results or infinite scrolling (e.g. fetching more recipes when the user has reached the bottom) [X]
-
-Shoow recipe link when clicking recipe []
+Show recipe link when clicking recipe []
 
 Make sure you do not accidentally scroll on mobile []
