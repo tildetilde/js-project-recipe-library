@@ -11,8 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let activeRecipes = [];
   let allRecipes = [];
   let isLoading = false;
-  let isRandomRecipeDisplayed = false;
-  const allowedCuisines = ["Mediterranean", "Asian", "Italian", "Mexican"];
+  /* wow */
 
   getRandomRecipe.addEventListener("click", () => {
     if (activeRecipes.length === 0) return;
