@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const quotaMessage = document.querySelector(".quota-message");
     if (quotaMessage) {
-      quotaMessage.style.display = "block";
+      quotaMessage.classList.add("show");
     }
   };
 

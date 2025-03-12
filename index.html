@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recipe Library</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
   </head>
   <body>
     <div class="header-container">
@@ -22,7 +26,9 @@
 
     <div class="filters-container">
       <div class="filter-dropdown">
-        <button class="dropdown-btn">Filters</button>
+        <button class="dropdown-btn">
+          <span class="material-icons">filter_list</span> Filters
+        </button>
         <div class="dropdown-content">
           <div class="filter-group">
             <h3>Diet</h3>
@@ -84,7 +90,9 @@
       </div>
 
       <div class="sort-dropdown">
-        <button class="dropdown-btn">Sort</button>
+        <button class="dropdown-btn">
+          <span class="material-icons">sort</span> Sort
+        </button>
         <div class="dropdown-content">
           <div class="sort-group">
             <label
@@ -112,7 +120,15 @@
       </div>
     </div>
 
-    <div class="recipes-grid"></div>
+    <div class="recipes-grid">
+      <div class="quota-message">
+        <h2>Daily Limit Reached</h2>
+        <p>
+          It's amazing that you want more recipes! However, you've reached the
+          daily limit of 150 recipe requests. Come back tomorrow ♥️!
+        </p>
+      </div>
+    </div>
 
     <script src="script.js"></script>
   </body>

@@ -109,6 +109,9 @@ h1 {
   font-size: 1rem;
   font-weight: 500;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .filter-dropdown .dropdown-btn {
@@ -239,6 +242,21 @@ h1 {
   list-style: none;
 }
 
+.quota-message {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.show {
+  display: block;
+}
+
+.quota-message.show {
+  display: block;
+  opacity: 1;
+}
+
 .recipes-grid.no-recipes-active {
   display: flex;
   flex-direction: column;
@@ -282,7 +300,7 @@ h1 {
 
 @media (max-width: 768px) {
   .filters-container {
-    flex-direction: column;
+    /* flex-direction: column; */
   }
 
   .dropdown-content {
