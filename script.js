@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const BASE_URL = "https://api.spoonacular.com/recipes/random";
-  const API_KEY = "76c7e57bf79245a0a12a395c3fdb2f0b";
-  const API_URL = `${BASE_URL}/?apiKey=${API_KEY}&number=30`;
-
+  const API_URL =
+    "https://api.spoonacular.com/recipes/random?number=12&include-tags=vegetarian&apiKey=1f7a525474994d99b2f2a00a1f826e01";
   const recipesGrid = document.querySelector(".recipes-grid");
   const filterDropdown = document.querySelector(".filter-dropdown");
   const sortDropdown = document.querySelector(".sort-dropdown");
@@ -90,6 +88,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const fetchRecipes = async () => {
     try {
       const response = await fetch(API_URL);
+
+      if (response.status === 402) {
+        console.warn(
+          "Quota limit reached! Calling showQuotaExceededMessage()."
+        );
+        showQuotaExceededMessage();
+        return [];
+      }
+
       const data = await response.json();
       const validRecipes = data.recipes.filter((recipe) => {
         return (
@@ -102,22 +109,40 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       return validRecipes;
     } catch (error) {
-      console.error("Error fetching recipes:", error);
+      console.warn("Error fetching recipes:", error);
       return [];
     }
   };
 
-  const displayRecipes = (recipes, isRandomRecipe = false) => {
+  const displayRecipes = (recipes) => {
+    const closeDropdowns = () => {
+      document.querySelectorAll(".dropdown-content").forEach((content) => {
+        content.style.display = "none";
+      });
+
+      document.querySelectorAll(".dropdown.content").forEach((btn) => {
+        btn.classList.remove("active");
+      });
+    };
+
     recipesGrid.innerHTML = "";
     // recipes = [{}, {}, {}, {}]
     if (recipes.length === 0) {
-      console.log("No recipes found. Hiding button.");
       recipesGrid.classList.add("no-recipes-active");
       randomButtonContainer.classList.add("hidden");
       recipesGrid.innerHTML = `<div class="no-recipes">
     <img src="computersaysno.gif" alt="No recipes match your filters.">
+    <p>No recipes match the filters. Sorry ♥️! </p>
+    <button class="reset-filters-btn">Reset Filters</button>
       </div>
       `;
+
+      closeDropdowns();
+
+      document
+        .querySelector(".reset-filters-btn")
+        .addEventListener("click", resetFilters);
+
       return;
     }
     recipesGrid.classList.remove("no-recipes-active");
@@ -148,17 +173,29 @@ document.addEventListener("DOMContentLoaded", () => {
         <img src="${recipe.image}" alt="${recipe.title}">
         <div class="recipe-content">
           <h3 class="recipe-title">${recipe.title}</h3>
-          <p class="recipe-meta">Cuisine: ${
-            recipe.cuisines.join(", ") || "Not specified"
-          }</p>
-          <p class="recipe-meta">Time: ${recipe.readyInMinutes} min</p>
+          <hr>
+          <div>
+            <p class="recipe-meta">
+              <span class="material-icons">restaurant</span> ${
+                recipe.cuisines[0] || "-"
+              }</p>
+            <p class="recipe-meta">
+              <span class="material-icons">schedule</span> ${
+                recipe.readyInMinutes
+              } min
+            </p>
+          </div>
+          <hr>
+
           <h4 class="recipe-subtitle">Ingredients</h4>
           <ul class="ingredient-list">
             ${recipe.extendedIngredients
               .slice(0, 4)
               .map(
                 (ingredient) =>
-                  `<li class="ingredient-list-item">${ingredient.name}</li>`
+                  `<li class="ingredient-list-item">${capitalize(
+                    ingredient.name
+                  )}</li>`
               )
               .join("")}
           </ul>
@@ -194,6 +231,39 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     recipesGrid.appendChild(container);
+  };
+
+  const resetFilters = () => {
+    // Uncheck all checkboxes
+    document
+      .querySelectorAll('input[type="checkbox"], input[type="radio"]')
+      .forEach((input) => {
+        input.checked = false;
+      });
+
+    // Show all recipes again
+    displayRecipes(allRecipes);
+  };
+
+  const showQuotaExceededMessage = () => {
+    console.log("Showing quota exceeded message...");
+    // Hide the loader in case it's still visible
+    const loader = document.getElementById("loader");
+    if (loader) loader.style.display = "none";
+
+    const recipesGrid = document.querySelector(".recipes-grid");
+    const quotaMessage = document.querySelector(".quota-message");
+
+    if (recipesGrid) {
+      recipesGrid.style.display = "block"; // Ensure it's visible
+    }
+
+    if (quotaMessage) {
+      quotaMessage.style.display = "block"; // Make it visible
+      quotaMessage.style.opacity = "1"; // Ensure it's visible
+    } else {
+      console.error("Quota message element not found.");
+    }
   };
 
   const filterRecipes = (recipes) => {
@@ -259,6 +329,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return "over60";
   };
 
+  const capitalize = (s) =>
+    s && String(s[0]).toUpperCase() + String(s).slice(1);
+
   const updateRecipes = async () => {
     const loader = document.getElementById("loader");
     loader.style.display = "block"; // Show the spinner
@@ -267,6 +340,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       if (allRecipes.length === 0) {
         allRecipes = await fetchRecipes();
+        if (allRecipes.length === 0) return;
       }
       const recipes = allRecipes;
       const filteredRecipes = filterRecipes(recipes);

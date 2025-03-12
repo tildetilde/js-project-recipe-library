@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recipe Library</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
   </head>
   <body>
     <div class="header-container">
       <h1>Recipe Library</h1>
-      <section class="random-button-container">
-        <button class="random-btn">Love at first bite? 😋</button>
-      </section>
     </div>
 
     <div id="loader" class="spinner">
@@ -22,7 +23,9 @@
 
     <div class="filters-container">
       <div class="filter-dropdown">
-        <button class="dropdown-btn">Filters</button>
+        <button class="dropdown-btn">
+          <span class="material-icons">filter_list</span> Filters
+        </button>
         <div class="dropdown-content">
           <div class="filter-group">
             <h3>Diet</h3>
@@ -84,7 +87,9 @@
       </div>
 
       <div class="sort-dropdown">
-        <button class="dropdown-btn">Sort</button>
+        <button class="dropdown-btn">
+          <span class="material-icons">sort</span> Sort
+        </button>
         <div class="dropdown-content">
           <div class="sort-group">
             <label
@@ -110,9 +115,23 @@
           </div>
         </div>
       </div>
+
+      <section class="random-button-container">
+        <button class="random-btn">
+          <span class="material-icons">shuffle</span>
+        </button>
+      </section>
     </div>
 
-    <div class="recipes-grid"></div>
+    <div class="recipes-grid">
+      <div class="quota-message">
+        <h2>Daily Limit Reached</h2>
+        <p class="quota-description">
+          It's amazing that you want more recipes! However, you've reached the
+          daily limit of recipe requests. Come back tomorrow ♥️!
+        </p>
+      </div>
+    </div>
 
     <script src="script.js"></script>
   </body>

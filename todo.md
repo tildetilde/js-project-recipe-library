@@ -1,25 +1,24 @@
-## priority
+## To dos (priority)
 
-Debug message you get from no matching filters[]
+1. Show message when daily quota has been reached [X – need to double check]
 
-displsy a message if 150 API calls have been made []
+2. Change cuisine filter to amounts of ingredients []
 
-Shoow recipe link when clicking recipe []
+3. Make sure you can back to all recipes when once no filter is met [X]
 
-Make sure you do not accidentally scroll on mobile []
+4. Add an all recipes button []
 
-Create an all recipes button in the top of the filter []
+5. Add filtering symbol [X]
 
-'Back to all recipes' button ta appear when random recipe is shown tha takes you back to the already fetched recipes[]
+6. Add sorting symbol [X]
 
-Stretch:
+## Stretch
+
 
 Allow users to search for specific recipe names or ingredients []
 
 sorting on amount of ingredients []
 
-filtering on amount of ingredients []
-
-Allow users to save/like recipes and store them in local storage. This includes adding a heart button to the recipe card and adding a "View favourites" button that only shows favourite recipes. []
+Show recipe link when clicking recipe []
 
 // "https://api.spoonacular.com/recipes/random?number=12&include-tags=vegetarian,gluten-free,dairy-free,Mediterranean,Asian,Italian,Mexican&apiKey=76c7e57bf79245a0a12a395c3fdb2f0b";
