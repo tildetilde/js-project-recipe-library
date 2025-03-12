@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const API_URL =
-    "https://api.spoonacular.com/recipes/random?number=102&include-tags=vegetarian&apiKey=76c7e57bf79245a0a12a395c3fdb2f0b";
+    "https://api.spoonacular.com/recipes/random?number=102&include-tags=vegetarian&apiKey=1f7a525474994d99b2f2a00a1f826e01";
   const recipesGrid = document.querySelector(".recipes-grid");
   const filterDropdown = document.querySelector(".filter-dropdown");
   const sortDropdown = document.querySelector(".sort-dropdown");
@@ -87,8 +87,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch(API_URL);
 
       if (response.status === 402) {
+        console.warn(
+          "Quota limit reached! Calling showQuotaExceededMessage()."
+        );
         showQuotaExceededMessage();
-        return;
+        return [];
       }
 
       const data = await response.json();
@@ -180,16 +183,24 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const showQuotaExceededMessage = () => {
+    console.log("Showing quota exceeded message...");
     // Hide the loader in case it's still visible
     const loader = document.getElementById("loader");
     if (loader) loader.style.display = "none";
 
-    // Replace recipe grid content with the quota message
-    recipesGrid.innerHTML = "";
-
+    recipesGrid.style.display = "none";
+    const recipesGrid = document.querySelector(".recipes-grid");
     const quotaMessage = document.querySelector(".quota-message");
+
+    if (recipesGrid) {
+      recipesGrid.style.display = "block"; // Ensure it's visible
+    }
+
     if (quotaMessage) {
-      quotaMessage.classList.add("show");
+      quotaMessage.style.display = "block"; // Make it visible
+      quotaMessage.style.opacity = "1"; // Ensure it's visible
+    } else {
+      console.error("Quota message element not found.");
     }
   };
 
