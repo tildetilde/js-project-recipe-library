@@ -153,20 +153,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const showQuotaExceededMessage = () => {
     // Hide the loader in case it's still visible
     const loader = document.getElementById("loader");
-    loader.style.display = "none";
+    if (loader) loader.style.display = "none";
 
     // Replace recipe grid content with the quota message
-    recipesGrid.innerHTML = `
-      <div class="quota-message">
-        <h2>Daily Limit Reached</h2>
-        <p>You've reached the daily limit of 150 recipe requests.</p>
-        <p>Please try again tomorrow or upgrade your plan.</p>
-      </div>
-    `;
-  };
+    recipesGrid.innerHTML = "";
 
-  showQuotaExceededMessage();
-  return;
+    const quotaMessage = document.querySelector(".quota-message");
+    if (quotaMessage) {
+      quotaMessage.style.display = "block";
+    }
+  };
 
   const filterRecipes = (recipes) => {
     const filters = {
