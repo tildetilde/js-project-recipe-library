@@ -11,19 +11,17 @@ document.addEventListener("DOMContentLoaded", () => {
   let activeRecipes = [];
   let allRecipes = [];
   let isLoading = false;
-  /* wow */
 
   getRandomRecipe.addEventListener("click", () => {
     if (activeRecipes.length === 0) return;
     // if this is true stop here
     const randomIndex = Math.floor(Math.random() * activeRecipes.length);
     const randomRecipe = activeRecipes[randomIndex];
-    displayRecipes([randomRecipe], true);
-    isRandomRecipeDisplayed = true;
+    displayRecipes([randomRecipe]);
   });
 
   window.addEventListener("scroll", async () => {
-    if (isLoading || isRandomRecipeDisplayed) return;
+    if (isLoading) return;
 
     if (
       window.innerHeight + window.scrollY >=
@@ -97,16 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const data = await response.json();
-      const validRecipes = data.recipes.filter((recipe) => {
-        return (
-          recipe.cuisines.some((cuisine) =>
-            allowedCuisines.includes(cuisine)
-          ) &&
-          recipe.image &&
-          recipe.title
-        );
-      });
-      return validRecipes;
+      return data.recipes;
     } catch (error) {
       console.warn("Error fetching recipes:", error);
       return [];
@@ -123,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.classList.remove("active");
       });
     };
-
     recipesGrid.innerHTML = "";
     // recipes = [{}, {}, {}, {}]
     if (recipes.length === 0) {
@@ -145,11 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     recipesGrid.classList.remove("no-recipes-active");
-    // randomButtonContainer.classList.remove("hidden");
-    randomButtonContainer.style.display = isRandomRecipe ? "none" : "flex";
-
-    const container = document.createElement("div");
-    container.classList.add("recipe-container");
+    randomButtonContainer.classList.remove("hidden");
+    randomButtonContainer.style.display = "flex";
 
     recipes.forEach((recipe) => {
       // {
@@ -160,14 +145,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const card = document.createElement("div");
       card.classList.add("recipe-card");
-      // const navigationButtons = isRandomRecipe
-      //   ? `
-      // <div class="navigation-buttons">
-      //     <button class="nav-btn back-btn">Back to all recipes</button>
-      //     <button class="nav-btn try-again-btn">Try again</button>
-      // </div>`
-      //   : "";
-
       card.innerHTML = `
         <img src="${recipe.image}" alt="${recipe.title}">
         <div class="recipe-content">
@@ -185,7 +162,6 @@ document.addEventListener("DOMContentLoaded", () => {
             </p>
           </div>
           <hr>
-
           <h4 class="recipe-subtitle">Ingredients</h4>
           <ul class="ingredient-list">
             ${recipe.extendedIngredients
@@ -200,36 +176,8 @@ document.addEventListener("DOMContentLoaded", () => {
           </ul>
         </div>
       `;
-      container.appendChild(card);
-      if (isRandomRecipe) {
-        // const backBtn = card.querySelector(".back-btn");
-        // const tryAgainBtn = card.querySelector(".try-again-btn");
-        const navigationButtons = document.createElement("div");
-        navigationButtons.classList.add("navigation-buttons");
-        navigationButtons.innerHTML = `
-                <button class="nav-btn back-btn">Back to all recipes</button>
-                <button class="nav-btn try-again-btn">Try again</button>
-            `;
-        container.appendChild(navigationButtons);
-
-        // Add event listeners
-        const backBtn = navigationButtons.querySelector(".back-btn");
-        const tryAgainBtn = navigationButtons.querySelector(".try-again-btn");
-        backBtn.addEventListener("click", () => {
-          displayRecipes(activeRecipes);
-        });
-
-        tryAgainBtn.addEventListener("click", () => {
-          const newRandomIndex = Math.floor(
-            Math.random() * activeRecipes.length
-          );
-          const newRandomRecipe = activeRecipes[newRandomIndex];
-          displayRecipes([newRandomRecipe], true);
-        });
-      }
+      recipesGrid.appendChild(card);
     });
-
-    recipesGrid.appendChild(container);
   };
 
   const resetFilters = () => {
