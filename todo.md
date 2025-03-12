@@ -14,10 +14,11 @@
 
 ## Stretch
 
+
 Allow users to search for specific recipe names or ingredients []
 
-Allow users to save/like recipes and store them in local storage. This includes adding a heart button to the recipe card and adding a "View favourites" button that only shows favourite recipes. []
+sorting on amount of ingredients []
 
 Show recipe link when clicking recipe []
 
-Make sure you do not accidentally scroll on mobile []
+// "https://api.spoonacular.com/recipes/random?number=12&include-tags=vegetarian,gluten-free,dairy-free,Mediterranean,Asian,Italian,Mexican&apiKey=76c7e57bf79245a0a12a395c3fdb2f0b";
