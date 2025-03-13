@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const API_URL =
     "https://api.spoonacular.com/recipes/random?number=12&include-tags=vegetarian&apiKey=1f7a525474994d99b2f2a00a1f826e01";
+
+  //DOM Elements
   const recipesGrid = document.querySelector(".recipes-grid");
   const filterDropdown = document.querySelector(".filter-dropdown");
   const sortDropdown = document.querySelector(".sort-dropdown");
@@ -8,13 +10,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const randomButtonContainer = document.querySelector(
     ".random-button-container"
   );
+  const loader = document.getElementById("loader");
+
+  //State variables
   let activeRecipes = [];
   let allRecipes = [];
   let isLoading = false;
 
+  //Event listeners
   getRandomRecipe.addEventListener("click", () => {
     if (activeRecipes.length === 0) return;
-    // if this is true stop here
     const randomIndex = Math.floor(Math.random() * activeRecipes.length);
     const randomRecipe = activeRecipes[randomIndex];
     displayRecipes([randomRecipe]);
@@ -33,31 +38,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  const loadMoreRecipes = async () => {
-    const loader = document.getElementById("loader");
-    loader.style.display = "block"; // Show the spinner while loading
-
-    const newRecipes = await fetchRecipes();
-
-    if (newRecipes.length > 0) {
-      activeRecipes = [...activeRecipes, ...newRecipes]; // Append new recipes
-      displayRecipes(activeRecipes);
-    }
-
-    loader.style.display = "none"; // Hide the spinner after fetching
-  };
-
   document.querySelectorAll(".dropdown-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".dropdown-content").forEach((content) => {
         if (content !== btn.nextElementSibling) {
-          content.style.display = "none"; // Close other dropdowns
+          content.style.display = "none";
         }
       });
 
       document.querySelectorAll(".dropdown-btn").forEach((otherBtn) => {
         if (otherBtn !== btn) {
-          otherBtn.classList.remove("active"); // Remove active state from other buttons
+          otherBtn.classList.remove("active");
         }
       });
 
@@ -81,6 +72,20 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+
+  //Functions
+  const loadMoreRecipes = async () => {
+    loader.style.display = "block";
+
+    const newRecipes = await fetchRecipes();
+
+    if (newRecipes.length > 0) {
+      activeRecipes = [...activeRecipes, ...newRecipes];
+      displayRecipes(activeRecipes);
+    }
+
+    loader.style.display = "none";
+  };
 
   const fetchRecipes = async () => {
     try {
@@ -113,7 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     };
     recipesGrid.innerHTML = "";
-    // recipes = [{}, {}, {}, {}]
     if (recipes.length === 0) {
       recipesGrid.classList.add("no-recipes-active");
       randomButtonContainer.classList.add("hidden");
@@ -132,17 +136,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       return;
     }
+
     recipesGrid.classList.remove("no-recipes-active");
     randomButtonContainer.classList.remove("hidden");
     randomButtonContainer.style.display = "flex";
 
     recipes.forEach((recipe) => {
-      // {
-      //   extendedIngredients [
-      //     { name }
-      //   ]
-      // }
-
       const card = document.createElement("div");
       card.classList.add("recipe-card");
       card.innerHTML = `
@@ -181,33 +180,27 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const resetFilters = () => {
-    // Uncheck all checkboxes
     document
       .querySelectorAll('input[type="checkbox"], input[type="radio"]')
       .forEach((input) => {
         input.checked = false;
       });
 
-    // Show all recipes again
     displayRecipes(allRecipes);
   };
 
   const showQuotaExceededMessage = () => {
-    console.log("Showing quota exceeded message...");
-    // Hide the loader in case it's still visible
-    const loader = document.getElementById("loader");
     if (loader) loader.style.display = "none";
 
-    const recipesGrid = document.querySelector(".recipes-grid");
     const quotaMessage = document.querySelector(".quota-message");
 
     if (recipesGrid) {
-      recipesGrid.style.display = "block"; // Ensure it's visible
+      recipesGrid.style.display = "block";
     }
 
     if (quotaMessage) {
-      quotaMessage.style.display = "block"; // Make it visible
-      quotaMessage.style.opacity = "1"; // Ensure it's visible
+      quotaMessage.style.display = "block";
+      quotaMessage.style.opacity = "1";
     } else {
       console.error("Quota message element not found.");
     }
@@ -281,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const updateRecipes = async () => {
     const loader = document.getElementById("loader");
-    loader.style.display = "block"; // Show the spinner
+    loader.style.display = "block";
     randomButtonContainer.style.display = "none";
 
     try {
@@ -298,14 +291,12 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("Error updating recipes:", error);
     } finally {
-      loader.style.display = "none"; // Hide the spinner after fetching
+      loader.style.display = "none";
     }
   };
 
   filterDropdown.addEventListener("change", updateRecipes);
   sortDropdown.addEventListener("change", updateRecipes);
-
-  console.log("Update Recipes:", activeRecipes.length);
 
   updateRecipes();
 });

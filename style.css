@@ -54,11 +54,11 @@ h1 {
   border: #0018a4 solid 2px;
 }
 
-.random-button-container.hidden {
+.hidden {
   display: none;
 }
 
-.hidden {
+.random-button-container.hidden {
   display: none;
 }
 
@@ -121,6 +121,11 @@ h1 {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.filter-dropdown,
+.sort-dropdown {
+  position: relative;
 }
 
 .filter-dropdown .dropdown-btn {
@@ -352,7 +357,6 @@ h1 {
   }
 
   .dropdown-content {
-    position: static;
     display: none;
   }
 
