@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const API_URL =
-    "https://api.spoonacular.com/recipes/random?number=12&include-tags=vegetarian&apiKey=1f7a525474994d99b2f2a00a1f826e01";
+    "https://api.spoonacular.com/recipes/random?number=80&include-tags=vegetarian&apiKey=1f7a525474994d99b2f2a00a1f826e01";
 
   //DOM Elements
   const recipesGrid = document.querySelector(".recipes-grid");
@@ -88,6 +88,19 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const fetchRecipes = async () => {
+    const cachedData = localStorage.getItem("cachedRecipes");
+    const cacheTimestamp = localStorage.getItem("cacheTimestamp");
+    const cacheExpiry = 60 * 60 * 1000;
+
+    if (
+      cachedData &&
+      cacheTimestamp &&
+      Date.now() - cacheTimestamp < cacheExpiry
+    ) {
+      console.log("Using cached recipes");
+      return JSON.parse(cachedData);
+    }
+
     try {
       const response = await fetch(API_URL);
 
@@ -100,6 +113,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const data = await response.json();
+      console.log("Fetched new recipes from API");
+
+      localStorage.setItem("cachedRecipes", JSON.stringify(data.recipes));
+      localStorage.setItem("cacheTimestamp", Date.now().toString());
+
       return data.recipes;
     } catch (error) {
       console.warn("Error fetching recipes:", error);
