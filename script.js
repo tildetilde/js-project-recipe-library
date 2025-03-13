@@ -145,6 +145,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement("div");
       card.classList.add("recipe-card");
       card.innerHTML = `
+        <a href="${
+          recipe.sourceUrl
+        }" target="_blank" rel="noopener noreferrer" class="recipe-link">
         <img src="${recipe.image}" alt="${recipe.title}">
         <div class="recipe-content">
           <h3 class="recipe-title">${recipe.title}</h3>

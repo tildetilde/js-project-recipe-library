@@ -248,6 +248,11 @@ h1 {
   font-size: 1.15rem;
 }
 
+.recipe-link {
+  text-decoration: none;
+  color: inherit;
+}
+
 .recipe-meta {
   font-size: 1rem;
   color: #666;
