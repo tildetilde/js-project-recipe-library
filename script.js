@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
       recipesGrid.innerHTML = `<div class="no-recipes">
     <img src="computersaysno.gif" alt="No recipes match your filters.">
     <p>No recipes match the filters. Sorry ♥️! </p>
-    <button class="reset-filters-btn">Reset Filters</button>
+    <button class="reset-filters-btn">Reset filters</button>
       </div>
       `;
 
