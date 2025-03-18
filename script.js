@@ -17,62 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let allRecipes = [];
   let isLoading = false;
 
-  //Event listeners
-  getRandomRecipe.addEventListener("click", () => {
-    if (activeRecipes.length === 0) return;
-    const randomIndex = Math.floor(Math.random() * activeRecipes.length);
-    const randomRecipe = activeRecipes[randomIndex];
-    displayRecipes([randomRecipe]);
-  });
-
-  window.addEventListener("scroll", async () => {
-    if (isLoading) return;
-
-    if (
-      window.innerHeight + window.scrollY >=
-      document.body.offsetHeight - 50
-    ) {
-      isLoading = true;
-      await loadMoreRecipes();
-      isLoading = false;
-    }
-  });
-
-  document.querySelectorAll(".dropdown-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".dropdown-content").forEach((content) => {
-        if (content !== btn.nextElementSibling) {
-          content.style.display = "none";
-        }
-      });
-
-      document.querySelectorAll(".dropdown-btn").forEach((otherBtn) => {
-        if (otherBtn !== btn) {
-          otherBtn.classList.remove("active");
-        }
-      });
-
-      btn.classList.toggle("active");
-      const content = btn.nextElementSibling;
-      content.style.display =
-        content.style.display === "block" ? "none" : "block";
-    });
-  });
-
-  document.addEventListener("click", (e) => {
-    if (
-      !e.target.matches(".dropdown-btn") &&
-      !e.target.closest(".dropdown-content")
-    ) {
-      document.querySelectorAll(".dropdown-content").forEach((content) => {
-        content.style.display = "none";
-      });
-      document.querySelectorAll(".dropdown-btn").forEach((btn) => {
-        btn.classList.remove("active");
-      });
-    }
-  });
-
   //Functions
   const loadMoreRecipes = async () => {
     loader.style.display = "block";
@@ -97,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
       cacheTimestamp &&
       Date.now() - cacheTimestamp < cacheExpiry
     ) {
-      console.log("Using cached recipes");
       return JSON.parse(cachedData);
     }
 
@@ -113,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const data = await response.json();
-      console.log("Fetched new recipes from API");
 
       localStorage.setItem("cachedRecipes", JSON.stringify(data.recipes));
       localStorage.setItem("cacheTimestamp", Date.now().toString());
@@ -228,28 +170,60 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const filterRecipes = (recipes) => {
-    const filters = {
-      diet: Array.from(
-        document.querySelectorAll('input[name="diet"]:checked')
-      ).map((el) => el.value),
-      cuisine: Array.from(
-        document.querySelectorAll('input[name="cuisine"]:checked')
-      ).map((el) => el.value),
-      time: Array.from(
-        document.querySelectorAll('input[name="time"]:checked')
-      ).map((el) => el.value),
+    const dietFilters = {
+      "gluten-free":
+        Array.from(
+          document.querySelectorAll(
+            'input[name="diet"][value="gluten-free"]:checked'
+          )
+        ).length > 0,
+      "dairy-free":
+        Array.from(
+          document.querySelectorAll(
+            'input[name="diet"][value="dairy-free"]:checked'
+          )
+        ).length > 0,
+      vegan:
+        Array.from(
+          document.querySelectorAll('input[name="diet"][value="vegan"]:checked')
+        ).length > 0,
+      vegetarian:
+        Array.from(
+          document.querySelectorAll(
+            'input[name="diet"][value="vegetarian"]:checked'
+          )
+        ).length > 0,
     };
+
+    const cuisineFilters = Array.from(
+      document.querySelectorAll('input[name="cuisine"]:checked')
+    ).map((el) => el.value);
+
+    const timeFilters = Array.from(
+      document.querySelectorAll('input[name="time"]:checked')
+    ).map((el) => el.value);
 
     return recipes.filter((recipe) => {
       const dietMatch =
-        filters.diet.length === 0 ||
-        filters.diet.some((diet) => recipe.diets.includes(diet));
+        (!dietFilters["gluten-free"] &&
+          !dietFilters["dairy-free"] &&
+          !dietFilters["vegan"] &&
+          !dietFilters["vegetarian"]) ||
+        ((dietFilters["gluten-free"] ? recipe.glutenFree : true) &&
+          (dietFilters["dairy-free"] ? recipe.dairyFree : true) &&
+          (dietFilters["vegan"] ? recipe.vegan : true) &&
+          (dietFilters["vegetarian"] ? recipe.vegetarian : true));
+
       const cuisineMatch =
-        filters.cuisine.length === 0 ||
-        filters.cuisine.some((cuisine) => recipe.cuisines.includes(cuisine));
+        cuisineFilters.length === 0 ||
+        cuisineFilters.some((cuisine) =>
+          recipe.cuisines.some((c) => c.toLowerCase() === cuisine.toLowerCase())
+        );
+
       const timeMatch =
-        filters.time.length === 0 ||
-        filters.time.includes(getTimeCategory(recipe.readyInMinutes));
+        timeFilters.length === 0 ||
+        timeFilters.includes(getTimeCategory(recipe.readyInMinutes));
+
       return dietMatch && cuisineMatch && timeMatch;
     });
   };
@@ -318,6 +292,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
   filterDropdown.addEventListener("change", updateRecipes);
   sortDropdown.addEventListener("change", updateRecipes);
+
+  //Event listeners
+  getRandomRecipe.addEventListener("click", () => {
+    if (activeRecipes.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * activeRecipes.length);
+    const randomRecipe = activeRecipes[randomIndex];
+    displayRecipes([randomRecipe]);
+  });
+
+  window.addEventListener("scroll", async () => {
+    if (isLoading) return;
+
+    if (
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 50
+    ) {
+      isLoading = true;
+      await loadMoreRecipes();
+      isLoading = false;
+    }
+  });
+
+  document.querySelectorAll(".dropdown-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".dropdown-content").forEach((content) => {
+        if (content !== btn.nextElementSibling) {
+          content.style.display = "none";
+        }
+      });
+
+      document.querySelectorAll(".dropdown-btn").forEach((otherBtn) => {
+        if (otherBtn !== btn) {
+          otherBtn.classList.remove("active");
+        }
+      });
+
+      btn.classList.toggle("active");
+      const content = btn.nextElementSibling;
+      content.style.display =
+        content.style.display === "block" ? "none" : "block";
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (
+      !e.target.matches(".dropdown-btn") &&
+      !e.target.closest(".dropdown-content")
+    ) {
+      document.querySelectorAll(".dropdown-content").forEach((content) => {
+        content.style.display = "none";
+      });
+      document.querySelectorAll(".dropdown-btn").forEach((btn) => {
+        btn.classList.remove("active");
+      });
+    }
+  });
 
   updateRecipes();
 });
